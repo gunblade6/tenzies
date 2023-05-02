@@ -6,7 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 
 function App() {
-  const [dicesNum, setDicesNum] = useState(10);
+  function checkLocalNums() {
+    if (localStorage.getItem("dicesNum")) {
+      return localStorage.getItem("dicesNum");
+    } else {
+      localStorage.setItem("dicesNum", 10);
+    }
+  }
+  const [dicesNum, setDicesNum] = useState(checkLocalNums);
   const [dice, setDice] = useState(allNewDice);
   const [tenzies, setTenzies] = useState(false);
   const [rolls, setRolls] = useState(0);
@@ -107,6 +114,7 @@ function App() {
 
   function changeDiceNum(e) {
     setDicesNum(e);
+    localStorage.setItem("dicesNum", e);
   }
   // when the number of dices change refresh the game
   useEffect(() => {
@@ -117,9 +125,11 @@ function App() {
   return (
     <main>
       <p className="bestScore">
-        Best Score: <span>{bestScore}</span>
+        Lowest Rolls: <span>{bestScore === 100 ? "-" : bestScore}</span>
       </p>
-      {!tenzies && <Sidebar changeDiceNum={changeDiceNum} currNum={dicesNum} />}
+      {!tenzies && (
+        <Sidebar changeDiceNum={changeDiceNum} currNum={+dicesNum} />
+      )}
       <div className="game">
         {tenzies ? (
           <div className="endGame">
@@ -130,7 +140,7 @@ function App() {
           </div>
         ) : (
           <>
-            <Heading count={dicesNum} />
+            <Heading count={+dicesNum} />
             <div className="diceHolder">{diceElements}</div>
           </>
         )}
