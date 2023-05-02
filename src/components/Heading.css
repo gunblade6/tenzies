@@ -1,0 +1,26 @@
+.heading {
+  margin-bottom: 50px;
+}
+
+.heading h1 {
+  font-size: 5rem;
+  text-align: center;
+}
+
+.heading p {
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .heading h1 {
+    font-size: 4rem;
+  }
+  .heading p {
+    font-size: 1rem;
+  }
+  .hint {
+    display: none;
+  }
+}
