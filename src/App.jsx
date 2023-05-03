@@ -1,12 +1,17 @@
 import "./App.css";
 import Die from "./components/Die";
 import Heading from "./components/Heading";
-import Sidebar from "./components/Sidebar";
+import Sidebar, { levels } from "./components/Sidebar";
 import Footer from "./components/Footer";
 import { useEffect, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 
 function App() {
+  const DEFAULT = levels.reduce((acc, cur) => {
+    acc[cur] = 1000;
+    return acc;
+  }, {});
+  2;
   const [bestRolls, setBestRolls] = useState({});
 
   const localBestRolls = localStorage.getItem("bestRolls");
@@ -14,11 +19,7 @@ function App() {
     if (localBestRolls) {
       setBestRolls(JSON.parse(localBestRolls));
     } else {
-      setBestRolls({
-        5: 1000,
-        10: 1000,
-        15: 1000,
-      });
+      setBestRolls(DEFAULT);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

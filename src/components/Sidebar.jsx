@@ -1,11 +1,12 @@
 import "./Sidebar.css";
 import PropTypes from "prop-types";
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const levels = new Array(3);
+for (let i = 0; i < levels.length; i++) {
+  levels[i] = (i + 1) * 5;
+}
 export default function Sidebar(props) {
-  const levels = new Array(3);
-  for (let i = 0; i < levels.length; i++) {
-    levels[i] = (i + 1) * 5;
-  }
   const levelHolders = levels.map((e) => {
     return (
       <div
