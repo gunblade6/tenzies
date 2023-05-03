@@ -33,8 +33,14 @@
 
 @media (max-width: 768px) {
   .diceHolder {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: calc(50px * 4);
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .die {
+    width: 50px;
+    font-size: 1.4rem;
   }
 }

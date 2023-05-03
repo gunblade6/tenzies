@@ -1,0 +1,18 @@
+footer {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  font-size: 0.8rem;
+  font-weight: 400;
+  width: max-content;
+}
+footer a {
+  text-decoration: none;
+  color: var(--main-color);
+  font-weight: 500;
+}

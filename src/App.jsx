@@ -2,10 +2,27 @@ import "./App.css";
 import Die from "./components/Die";
 import Heading from "./components/Heading";
 import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
 import { useEffect, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 
 function App() {
+  const [bestRolls, setBestRolls] = useState({});
+
+  const localBestRolls = localStorage.getItem("bestRolls");
+  useEffect(() => {
+    if (localBestRolls) {
+      setBestRolls(JSON.parse(localBestRolls));
+    } else {
+      setBestRolls({
+        5: 1000,
+        10: 1000,
+        15: 1000,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function checkLocalNums() {
     if (localStorage.getItem("dicesNum")) {
       return localStorage.getItem("dicesNum");
@@ -17,7 +34,6 @@ function App() {
   const [dice, setDice] = useState(allNewDice);
   const [tenzies, setTenzies] = useState(false);
   const [rolls, setRolls] = useState(0);
-  const [bestScore, setBestScore] = useState(100);
 
   function createNewDice() {
     return {
@@ -61,7 +77,6 @@ function App() {
 
   // map space key to trigger the main button
   const buttonRef = useRef(null);
-
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (event.code === "Space") {
@@ -69,10 +84,10 @@ function App() {
       }
     };
 
-    document.addEventListener("keydown", handleKeyPress);
+    document.addEventListener("keyup", handleKeyPress);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener("keyup", handleKeyPress);
     };
   }, []);
 
@@ -105,12 +120,18 @@ function App() {
 
     if (allHeld && allSameNum) {
       setTenzies(true);
-      if (rolls < bestScore) {
-        setBestScore(rolls);
+      if (rolls < bestRolls[dicesNum]) {
+        setBestRolls((prevRolls) => {
+          return { ...prevRolls, [dicesNum]: rolls };
+        });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dice]);
+
+  useEffect(() => {
+    localStorage.setItem("bestRolls", JSON.stringify(bestRolls));
+  }, [bestRolls]);
 
   function changeDiceNum(e) {
     setDicesNum(e);
@@ -125,7 +146,8 @@ function App() {
   return (
     <main>
       <p className="bestScore">
-        Lowest Rolls: <span>{bestScore === 100 ? "-" : bestScore}</span>
+        Best Rolls:{" "}
+        <span>{bestRolls[dicesNum] === 1000 ? "-" : bestRolls[dicesNum]}</span>
       </p>
       {!tenzies && (
         <Sidebar changeDiceNum={changeDiceNum} currNum={+dicesNum} />
@@ -172,6 +194,7 @@ function App() {
           </button>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }

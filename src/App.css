@@ -60,13 +60,19 @@
 .hint {
   font-weight: 400;
   font-size: 0.9rem;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 .hint span,
 .rolls,
 .special,
 .bestScore span {
   color: var(--main-color);
+  font-weight: 500;
+}
+.bestScore {
+  position: absolute;
+  top: 20px;
+  left: 20px;
   font-weight: 500;
 }
 
@@ -85,11 +91,8 @@
     font-size: 0.8rem;
     margin-top: 25px;
   }
-}
-
-.bestScore {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-weight: 500;
+  .bestScore {
+    top: calc(100% - 70px);
+    font-size: 0.8rem;
+  }
 }

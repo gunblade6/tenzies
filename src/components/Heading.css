@@ -1,5 +1,6 @@
 .heading {
-  margin-bottom: 50px;
+  position: absolute;
+  top: 20px;
 }
 
 .heading h1 {
@@ -15,10 +16,10 @@
 
 @media (max-width: 768px) {
   .heading h1 {
-    font-size: 4rem;
+    font-size: 3rem;
   }
   .heading p {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
   .hint {
     display: none;
