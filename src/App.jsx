@@ -5,8 +5,18 @@ import Sidebar, { levels } from "./components/Sidebar";
 import Footer from "./components/Footer";
 import { useEffect, useRef, useState } from "react";
 import { nanoid } from "nanoid";
+import DarkTheme from "./components/DarkTheme";
 
 function App() {
+  const localTheme = localStorage.getItem("darkTheme");
+  const [darkTheme, setDarkTheme] = useState(JSON.parse(localTheme) || false);
+  const darkStyle = { color: darkTheme ? "var(--light)" : "black" };
+  const backgroundDark = {
+    background: darkTheme
+      ? "linear-gradient(270deg,#223358, #182540)"
+      : "linear-gradient(270deg, #d8eaff, #e7edf2)",
+  };
+
   const DEFAULT = levels.reduce((acc, cur) => {
     acc[cur] = 1000;
     return acc;
@@ -144,18 +154,26 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dicesNum]);
 
+  // toggle theme
+  function toggleTheme() {
+    setDarkTheme((prevTheme) => !prevTheme);
+  }
+  useEffect(() => {
+    localStorage.setItem("darkTheme", JSON.stringify(darkTheme));
+  }, [darkTheme]);
   return (
-    <main>
-      <p className="bestScore">
+    <main style={backgroundDark}>
+      <p className="bestScore" style={darkStyle}>
         Best Rolls:{" "}
         <span>{bestRolls[dicesNum] === 1000 ? "-" : bestRolls[dicesNum]}</span>
       </p>
       {!tenzies && (
         <Sidebar changeDiceNum={changeDiceNum} currNum={+dicesNum} />
       )}
+      <DarkTheme toggleTheme={toggleTheme} darkTheme={darkTheme} />
       <div className="game">
         {tenzies ? (
-          <div className="endGame">
+          <div className="endGame" style={darkStyle}>
             <h3>Good Job!</h3>
             <p>
               You finished with <span className="rolls">{rolls}</span> rolls
@@ -163,12 +181,12 @@ function App() {
           </div>
         ) : (
           <>
-            <Heading count={+dicesNum} />
+            <Heading count={+dicesNum} darkTheme={darkTheme} />
             <div className="diceHolder">{diceElements}</div>
           </>
         )}
         {!tenzies && (
-          <p className="hint">
+          <p className="hint" style={darkStyle}>
             Press <span>SPACE</span> or
           </p>
         )}
@@ -179,7 +197,7 @@ function App() {
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke="currentColor"
+              stroke={darkTheme ? "var(--light)" : "black"}
               className="resetButton"
               onClick={reset}
             >
@@ -195,7 +213,7 @@ function App() {
           </button>
         </div>
       </div>
-      <Footer />
+      <Footer darkTheme={darkTheme} />
     </main>
   );
 }

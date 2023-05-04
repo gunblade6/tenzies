@@ -26,6 +26,13 @@
   -ms-transition: 100ms;
   -o-transition: 100ms;
 }
+.die:not(:hover) {
+  transition: 300ms;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -ms-transition: 300ms;
+  -o-transition: 300ms;
+}
 .die:hover {
   background-color: var(--main-color);
   color: white;

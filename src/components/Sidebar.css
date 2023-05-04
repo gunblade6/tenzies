@@ -37,6 +37,13 @@
   -ms-transition: 100ms;
   -o-transition: 100ms;
 }
+.side .levelHolder:not(:hover) {
+  transition: 300ms;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -ms-transition: 300ms;
+  -o-transition: 300ms;
+}
 .side .levelHolder:hover {
   background-color: var(--main-color);
   color: white;

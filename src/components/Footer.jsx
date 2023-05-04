@@ -1,7 +1,8 @@
 import "./Footer.css";
-export default function Footer() {
+import PropTypes from "prop-types";
+export default function Footer(props) {
   return (
-    <footer>
+    <footer style={{ color: props.darkTheme ? "var(--light)" : "black" }}>
       Made with ☕ by{" "}
       <a
         href="https://mohamed-dev.netlify.app/"
@@ -13,3 +14,7 @@ export default function Footer() {
     </footer>
   );
 }
+
+Footer.propTypes = {
+  darkTheme: PropTypes.bool,
+};

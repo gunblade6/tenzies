@@ -14,10 +14,23 @@
 body {
   background-color: var(--background-color);
   padding: 40px 20px;
+  background: linear-gradient(270deg, #182540, #101726);
+  background-size: 600% 600%;
+
+  -webkit-animation: backWave 30s ease infinite;
+  -moz-animation: backWave 30s ease infinite;
+  -o-animation: backWave 30s ease infinite;
+  animation: backWave 30s ease infinite;
 }
 
 main {
-  background-color: var(--light);
+  /*background-color: var(--light);
+  */
+  background: linear-gradient(270deg, #d8eaff, #e7edf2);
+  background-size: 400% 400%;
+  -webkit-animation: wave 0s ease infinite;
+  -moz-animation: wave 0s ease infinite;
+  animation: wave 0s ease infinite;
   min-height: calc(100vh - 80px);
   max-width: 1000px;
   margin: 0 auto;
@@ -30,6 +43,8 @@ main {
   align-items: center;
   padding: 20px;
   position: relative;
+  -webkit-animation: gradient-animation 1s ease infinite;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
 }
 .game {
   margin: 0 auto;
@@ -49,5 +64,84 @@ main {
   }
   .game {
     margin-top: 50px;
+  }
+}
+
+@-webkit-keyframes wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-moz-keyframes wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@-webkit-keyframes backWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-moz-keyframes backWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@-o-keyframes backWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes backWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
