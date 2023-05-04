@@ -41,7 +41,7 @@
   -o-transition: 200ms;
 }
 
-.themeToggle img {
+.themeToggle svg {
   position: absolute;
   width: 20px;
   top: 50%;
