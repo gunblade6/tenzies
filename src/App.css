@@ -96,3 +96,12 @@
     font-size: 0.8rem;
   }
 }
+
+@media (max-width: 992px) {
+  .hint {
+    display: none;
+  }
+  .rollButton {
+    margin-top: 30px;
+  }
+}
