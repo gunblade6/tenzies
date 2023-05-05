@@ -260,7 +260,7 @@ function App() {
       </p> */}
       <p className="displayScore bestTime" style={darkStyle}>
         Best Time:{" "}
-        <span>{bestTime[dicesNum] === 1000 ? "-" : bestTime[dicesNum]}</span>{" "}
+        <span>{bestTime[dicesNum] === 1000 ? "-" : bestTime[dicesNum]}s</span>{" "}
         with{" "}
         <span>
           {bestTimeRelative[dicesNum] === 1000
