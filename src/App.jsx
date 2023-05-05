@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import { useEffect, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 import DarkTheme from "./components/DarkTheme";
+import Confetti from "react-confetti";
 
 function App() {
   const localTheme = localStorage.getItem("darkTheme");
@@ -163,6 +164,7 @@ function App() {
   }, [darkTheme]);
   return (
     <main style={backgroundDark}>
+      {tenzies && <Confetti />}
       <p className="bestScore" style={darkStyle}>
         Best Rolls:{" "}
         <span>{bestRolls[dicesNum] === 1000 ? "-" : bestRolls[dicesNum]}</span>

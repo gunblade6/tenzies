@@ -45,6 +45,7 @@ main {
   position: relative;
   -webkit-animation: gradient-animation 1s ease infinite;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 .game {
   margin: 0 auto;
