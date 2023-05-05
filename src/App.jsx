@@ -24,14 +24,12 @@ function App() {
     return acc;
   }, {});
   2;
-  const [bestRolls, setBestRolls] = useState({});
+  const [bestRolls, setBestRolls] = useState(DEFAULT);
 
   const localBestRolls = localStorage.getItem("bestRolls");
   useEffect(() => {
     if (localBestRolls) {
       setBestRolls(JSON.parse(localBestRolls));
-    } else {
-      setBestRolls(DEFAULT);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -48,17 +46,31 @@ function App() {
   const [tenzies, setTenzies] = useState(false);
   const [rolls, setRolls] = useState(0);
 
-  // TIMER START ---------------DELETE ME AFTER TIMER IS DONE-----------------------------
   const [time, setTime] = useState(0);
   const [bestTime, setBestTime] = useState(DEFAULT);
   const [gameStart, setGameStart] = useState(false);
+  const [bestTimeRelative, setBestTimeRelative] = useState(DEFAULT);
+  const [bestRollsRelative, setBestRollsRelative] = useState(DEFAULT);
 
   const localBestTime = localStorage.getItem("bestTime");
   useEffect(() => {
     if (localBestTime) {
       setBestTime(JSON.parse(localBestTime));
-    } else {
-      setBestTime(DEFAULT);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const localBestTimeRolls = localStorage.getItem("bestTimeRolls");
+  useEffect(() => {
+    if (localBestTimeRolls) {
+      setBestTimeRelative(JSON.parse(localBestTimeRolls));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const localBestRollsTime = localStorage.getItem("bestRollsTime");
+  useEffect(() => {
+    if (localBestRollsTime) {
+      setBestRollsRelative(JSON.parse(localBestRollsTime));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -181,11 +193,17 @@ function App() {
         setBestRolls((prevRolls) => {
           return { ...prevRolls, [dicesNum]: rolls };
         });
+        setBestRollsRelative((prevRelative) => {
+          return { ...prevRelative, [dicesNum]: time };
+        });
         setGotHighScore(true);
       }
       if (time < bestTime[dicesNum]) {
         setBestTime((prevTime) => {
           return { ...prevTime, [dicesNum]: time.toFixed(2) };
+        });
+        setBestTimeRelative((prevRelative) => {
+          return { ...prevRelative, [dicesNum]: rolls };
         });
         setGotHighScore(true);
       }
@@ -200,6 +218,14 @@ function App() {
   useEffect(() => {
     localStorage.setItem("bestTime", JSON.stringify(bestTime));
   }, [bestTime]);
+
+  useEffect(() => {
+    localStorage.setItem("bestTimeRolls", JSON.stringify(bestTimeRelative));
+  }, [bestTimeRelative]);
+
+  useEffect(() => {
+    localStorage.setItem("bestRollsTime", JSON.stringify(bestRollsRelative));
+  }, [bestRollsRelative]);
 
   function changeDiceNum(e) {
     setDicesNum(e);
@@ -221,13 +247,27 @@ function App() {
   return (
     <main style={backgroundDark}>
       {tenzies && gotHighScore && <Confetti />}
-      <p className="displayScore bestRolls" style={darkStyle}>
+      {/* <p className="displayScore bestRolls" style={darkStyle}>
         Best Rolls:{" "}
-        <span>{bestRolls[dicesNum] === 1000 ? "-" : bestRolls[dicesNum]}</span>
-      </p>
+        <span>{bestRolls[dicesNum] === 1000 ? "-" : bestRolls[dicesNum]}</span>{" "}
+        at{" "}
+        <span>
+          {bestRollsRelative[dicesNum] === 1000
+            ? "-"
+            : Number(bestRollsRelative[dicesNum]).toFixed(2)}
+        </span>{" "}
+        seconds
+      </p> */}
       <p className="displayScore bestTime" style={darkStyle}>
         Best Time:{" "}
-        <span>{bestTime[dicesNum] === 1000 ? "-" : bestTime[dicesNum]}</span>
+        <span>{bestTime[dicesNum] === 1000 ? "-" : bestTime[dicesNum]}</span>{" "}
+        with{" "}
+        <span>
+          {bestTimeRelative[dicesNum] === 1000
+            ? "-"
+            : bestTimeRelative[dicesNum]}
+        </span>{" "}
+        rolls
       </p>
       {!tenzies && (
         <Sidebar changeDiceNum={changeDiceNum} currNum={+dicesNum} />
@@ -236,7 +276,7 @@ function App() {
       <div className="game">
         {tenzies ? (
           <div className="endGame" style={darkStyle}>
-            <h3>Good Job!</h3>
+            <h3>{gotHighScore ? "New best score habibi!" : "Good job!"}</h3>
             <p>
               You finished with <span className="rolls">{rolls}</span> rolls
             </p>

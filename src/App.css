@@ -50,6 +50,7 @@
 .endGame h3 {
   font-size: 3rem;
   text-align: center;
+  margin-bottom: 20px;
 }
 .endGame p {
   text-align: center;
@@ -76,9 +77,9 @@
   left: 20px;
   font-weight: 500;
 }
-.bestTime {
+/* .bestTime {
   top: 45px;
-}
+} */
 .timeDisplay {
   margin-top: 20px;
   color: white;
@@ -103,12 +104,12 @@
     margin-top: 25px;
   }
   .displayScore {
-    top: calc(100% - 80px);
+    top: calc(100% - 75px);
     font-size: 0.8rem;
   }
-  .bestTime {
+  /* .bestTime {
     top: calc(100% - 60px);
-  }
+  } */
 }
 
 @media (max-width: 992px) {
