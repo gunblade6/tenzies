@@ -196,7 +196,7 @@ function App() {
         setBestRollsRelative((prevRelative) => {
           return { ...prevRelative, [dicesNum]: time };
         });
-        setGotHighScore(true);
+        // setGotHighScore(true);
       }
       if (time < bestTime[dicesNum]) {
         setBestTime((prevTime) => {
