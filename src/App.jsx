@@ -3,12 +3,13 @@ import Die from "./components/Die";
 import Heading from "./components/Heading";
 import Sidebar, { levels } from "./components/Sidebar";
 import Footer from "./components/Footer";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { nanoid } from "nanoid";
 import DarkTheme from "./components/DarkTheme";
 import Confetti from "react-confetti";
 
 function App() {
+  const [gotHighScore, setGotHighScore] = useState(false);
   const localTheme = localStorage.getItem("darkTheme");
   const [darkTheme, setDarkTheme] = useState(JSON.parse(localTheme) || false);
   const darkStyle = { color: darkTheme ? "var(--light)" : "black" };
@@ -47,6 +48,41 @@ function App() {
   const [tenzies, setTenzies] = useState(false);
   const [rolls, setRolls] = useState(0);
 
+  // TIMER START ---------------DELETE ME AFTER TIMER IS DONE-----------------------------
+  const [time, setTime] = useState(0);
+  const [bestTime, setBestTime] = useState(DEFAULT);
+  const [gameStart, setGameStart] = useState(false);
+
+  const localBestTime = localStorage.getItem("bestTime");
+  useEffect(() => {
+    if (localBestTime) {
+      setBestTime(JSON.parse(localBestTime));
+    } else {
+      setBestTime(DEFAULT);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // reset timer when level changes
+
+  useEffect(() => {
+    setGameStart(false);
+    setTime(0);
+  }, [dicesNum]);
+
+  // incrase timer by 0.1
+  useEffect(() => {
+    let timeIncreaser = null;
+    if (gameStart) {
+      timeIncreaser = setInterval(() => {
+        setTime((oldTime) => oldTime + 0.01);
+      }, 10);
+    }
+
+    // Return a cleanup function to clear the interval when the component unmounts or gameStart becomes false
+    return () => clearInterval(timeIncreaser);
+  }, [gameStart, setTime]);
+
   function createNewDice() {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -66,8 +102,11 @@ function App() {
   }
 
   function reset() {
+    setGotHighScore(false);
     const allClear = dice.some((e) => e.isHeld);
-    if (allClear || tenzies) {
+    if (allClear || tenzies || gameStart) {
+      setGameStart(false);
+      setTime(0);
       setRolls(0);
       setDice(allNewDice);
       setTenzies(false);
@@ -84,7 +123,7 @@ function App() {
       return dice.isHeld ? dice : createNewDice();
     });
     setDice(newArr);
-    setRolls((prevRoll) => prevRoll + 1);
+    gameStart ? setRolls((prevRoll) => prevRoll + 1) : null;
   }
 
   // map space key to trigger the main button
@@ -105,6 +144,8 @@ function App() {
 
   // change isHeld state when user clicks on a box
   function toggleHold(id) {
+    gameStart ? null : setGameStart(true);
+
     const newArr = dice.map((dice) => {
       return dice.id === id ? { ...dice, isHeld: !dice.isHeld } : dice;
     });
@@ -112,16 +153,19 @@ function App() {
   }
 
   // map over dice state and make elements
-  const diceElements = dice.map((dice) => {
-    return (
-      <Die
-        key={nanoid()}
-        value={dice.value}
-        toggleHold={() => toggleHold(dice.id)}
-        isHeld={dice.isHeld}
-      />
-    );
-  });
+  const diceElements = useMemo(() => {
+    return dice.map((dice) => {
+      return (
+        <Die
+          key={nanoid()}
+          value={dice.value}
+          toggleHold={() => toggleHold(dice.id)}
+          isHeld={dice.isHeld}
+        />
+      );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rolls, dice]);
 
   // track every change in dices to check for win
   useEffect(() => {
@@ -132,10 +176,18 @@ function App() {
 
     if (allHeld && allSameNum) {
       setTenzies(true);
+      setGameStart(false);
       if (rolls < bestRolls[dicesNum]) {
         setBestRolls((prevRolls) => {
           return { ...prevRolls, [dicesNum]: rolls };
         });
+        setGotHighScore(true);
+      }
+      if (time < bestTime[dicesNum]) {
+        setBestTime((prevTime) => {
+          return { ...prevTime, [dicesNum]: time.toFixed(2) };
+        });
+        setGotHighScore(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,6 +196,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem("bestRolls", JSON.stringify(bestRolls));
   }, [bestRolls]);
+
+  useEffect(() => {
+    localStorage.setItem("bestTime", JSON.stringify(bestTime));
+  }, [bestTime]);
 
   function changeDiceNum(e) {
     setDicesNum(e);
@@ -164,10 +220,14 @@ function App() {
   }, [darkTheme]);
   return (
     <main style={backgroundDark}>
-      {tenzies && <Confetti />}
-      <p className="bestScore" style={darkStyle}>
+      {tenzies && gotHighScore && <Confetti />}
+      <p className="displayScore bestRolls" style={darkStyle}>
         Best Rolls:{" "}
         <span>{bestRolls[dicesNum] === 1000 ? "-" : bestRolls[dicesNum]}</span>
+      </p>
+      <p className="displayScore bestTime" style={darkStyle}>
+        Best Time:{" "}
+        <span>{bestTime[dicesNum] === 1000 ? "-" : bestTime[dicesNum]}</span>
       </p>
       {!tenzies && (
         <Sidebar changeDiceNum={changeDiceNum} currNum={+dicesNum} />
@@ -179,6 +239,9 @@ function App() {
             <h3>Good Job!</h3>
             <p>
               You finished with <span className="rolls">{rolls}</span> rolls
+            </p>
+            <p>
+              Time <span className="time">{time.toFixed(2)}</span> seconds
             </p>
           </div>
         ) : (
@@ -213,6 +276,9 @@ function App() {
           <button ref={buttonRef} className="rollButton" onClick={reroll}>
             {tenzies ? "Play Again" : "Roll"}
           </button>
+        </div>
+        <div className="timeDisplay" style={darkStyle}>
+          Timer: <span>{time.toFixed(2)}</span>
         </div>
       </div>
       <Footer darkTheme={darkTheme} />

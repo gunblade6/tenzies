@@ -64,16 +64,27 @@
 }
 .hint span,
 .rolls,
+.time,
 .special,
-.bestScore span {
+.displayScore span {
   color: var(--main-color);
   font-weight: 500;
 }
-.bestScore {
+.displayScore {
   position: absolute;
   top: 20px;
   left: 20px;
   font-weight: 500;
+}
+.bestTime {
+  top: 45px;
+}
+.timeDisplay {
+  margin-top: 20px;
+  color: white;
+}
+.timeDisplay span {
+  color: var(--main-color);
 }
 
 @media (max-width: 768px) {
@@ -91,9 +102,12 @@
     font-size: 0.8rem;
     margin-top: 25px;
   }
-  .bestScore {
-    top: calc(100% - 70px);
+  .displayScore {
+    top: calc(100% - 80px);
     font-size: 0.8rem;
+  }
+  .bestTime {
+    top: calc(100% - 60px);
   }
 }
 
