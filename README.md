@@ -10,8 +10,8 @@ Tenzies games using react js
 
 ## Screenshots
 
-[Light theme](./src/assets/screenshotLight.png)
-[Dark theme](./src/assets/screenshotDark.png)
+![Light theme](./src/assets/screenshotLight.png)
+![Dark theme](./src/assets/screenshotDark.png)
 
 ## Issues
 
