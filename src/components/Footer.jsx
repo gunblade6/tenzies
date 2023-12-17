@@ -5,11 +5,11 @@ export default function Footer(props) {
     <footer style={{ color: props.darkTheme ? "var(--light)" : "black" }}>
       Made with ☕ by{" "}
       <a
-        href="https://mohamed-dev.netlify.app/"
+        href="https://urboifox.vercel.app/"
         target="_blank"
         rel="noreferrer"
       >
-        Gunblade
+        Fox
       </a>
     </footer>
   );
